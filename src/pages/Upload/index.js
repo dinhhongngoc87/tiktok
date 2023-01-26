@@ -1,4 +1,4 @@
-import Header from "../../components/Layout/HeaderOnly";
+// import Header from "../../components/Layout/HeaderOnly";
 function Upload() {
     return ( 
         <div>
