@@ -2,14 +2,15 @@ import classNames from 'classnames/bind';
 import { useEffect, useState } from 'react';
 import Tippy from '@tippyjs/react/headless';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleXmark, faSpinner, faMagnifyingGlass, faSignIn } from '@fortawesome/free-solid-svg-icons';
 import { useReducer } from 'react';
-import styles from '../../components/Header/Header.module.scss';
-import images from '../../../../asset/images';
-import AccountItem from '../AccountItem';
-import { faCircleXmark, faSpinner, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
-import { Wrapper as PopperWrapper } from '../../../Popper';
 import { Action } from '@remix-run/router';
 
+import styles from '../../components/Header/Header.module.scss';
+import images from '../../../../asset/images';
+import AccountItem from '../../../AccountItem';
+import { Wrapper as PopperWrapper } from '../../../Popper';
+import Button from '../../../Button';
 // bind styles trả về một function cho cx
 const cx = classNames.bind(styles);
 //init
@@ -36,30 +37,29 @@ const addSearch = (payload) => {
 };
 //reducer
 const reducer = (state, action) => {
-    switch(action.type){
+    switch (action.type) {
         case SET_SEARCH:
-            return{
+            return {
                 ...state,
-                currentSearch:action.payload
-            }
+                currentSearch: action.payload,
+            };
         case ADD_SEARCH:
-            return{
+            return {
                 ...state,
-                currentSearch:'',
-                searchedList:[...state.searchedList,action.payload]
-            }
+                currentSearch: '',
+                searchedList: [...state.searchedList, action.payload],
+            };
         default:
-            throw new Error('Invalid action')
-
+            throw new Error('Invalid action');
     }
 
-    return state
+    return state;
 };
 function Header() {
     const [state, dispatch] = useReducer(reducer, initState);
     const { currentSearch, searchedList } = state;
-    console.log('check input: ',currentSearch)
-    console.log('check array: ',searchedList)
+    console.log('check input: ', currentSearch);
+    console.log('check array: ', searchedList);
     useEffect(() => {});
 
     return (
@@ -105,13 +105,25 @@ function Header() {
                         <FontAwesomeIcon className={cx('loading')} icon={faSpinner} />
 
                         <Tippy>
-                            <button onClick={()=>{dispatch(addSearch(currentSearch))}} className={cx('search-btn')}>
+                            <button
+                                onClick={() => {
+                                    dispatch(addSearch(currentSearch));
+                                }}
+                                className={cx('search-btn')}
+                            >
                                 <FontAwesomeIcon icon={faMagnifyingGlass} />
                             </button>
                         </Tippy>
                     </div>
                 </Tippy>
-                <div className={cx('actions')}></div>
+                <div className={cx('actions')}>
+                    <Button text >
+                        Upload
+                    </Button>
+                    <Button primary leftIcon = {<FontAwesomeIcon icon={faSignIn} />}>
+                        Login
+                    </Button>
+                </div>
             </div>
         </header>
     );
