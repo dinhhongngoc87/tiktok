@@ -59,6 +59,11 @@
 .search, .search-result {
     width: 361px;
 }
+.search-result {
+    .searched-child{
+        padding: 9px 16px;
+    }
+}
 .search-title{
     padding: 15px 16px;
     color: rgba(22,24,35,0.5);
