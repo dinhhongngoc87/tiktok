@@ -2,7 +2,15 @@ import classNames from 'classnames/bind';
 import { useEffect, useState } from 'react';
 import Tippy from '@tippyjs/react/headless';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleXmark, faSpinner, faMagnifyingGlass, faSignIn } from '@fortawesome/free-solid-svg-icons';
+import {
+    faCircleXmark,
+    faSpinner,
+    faMagnifyingGlass,
+    faSignIn,
+    faEllipsisVertical,
+    faEarthAsia,
+    faCircleQuestion,
+} from '@fortawesome/free-solid-svg-icons';
 import { useReducer } from 'react';
 import { Action } from '@remix-run/router';
 
@@ -11,8 +19,27 @@ import images from '../../../../asset/images';
 import AccountItem from '../../../AccountItem';
 import { Wrapper as PopperWrapper } from '../../../Popper';
 import Button from '../../../Button';
+import Menu from '../../../Popper/Menu';
+import { faKeyboard } from '@fortawesome/free-regular-svg-icons';
+
 // bind styles trả về một function cho cx
 const cx = classNames.bind(styles);
+
+const MENU_ITEMs = [
+    {
+        icon:<FontAwesomeIcon icon={faEarthAsia} />,
+        title:'English'
+    },
+    {
+        icon:<FontAwesomeIcon icon={faCircleQuestion} />,
+        title:'Feedback and Help',
+        to:'/feedback'
+    },
+    {
+        icon:<FontAwesomeIcon icon={faKeyboard} />,
+        title:'Keyboard shortcuts'
+    }
+]
 //init
 const initState = {
     currentSearch: '',
@@ -58,8 +85,6 @@ const reducer = (state, action) => {
 function Header() {
     const [state, dispatch] = useReducer(reducer, initState);
     const { currentSearch, searchedList } = state;
-    console.log('check input: ', currentSearch);
-    console.log('check array: ', searchedList);
     useEffect(() => {});
 
     return (
@@ -104,25 +129,26 @@ function Header() {
                         </button>
                         <FontAwesomeIcon className={cx('loading')} icon={faSpinner} />
 
-                        <Tippy>
-                            <button
-                                onClick={() => {
-                                    dispatch(addSearch(currentSearch));
-                                }}
-                                className={cx('search-btn')}
-                            >
-                                <FontAwesomeIcon icon={faMagnifyingGlass} />
-                            </button>
-                        </Tippy>
+                        <button
+                            onClick={() => {
+                                dispatch(addSearch(currentSearch));
+                            }}
+                            className={cx('search-btn')}
+                        >
+                            <FontAwesomeIcon icon={faMagnifyingGlass} />
+                        </button>
                     </div>
                 </Tippy>
                 <div className={cx('actions')}>
-                    <Button text >
-                        Upload
-                    </Button>
-                    <Button primary leftIcon = {<FontAwesomeIcon icon={faSignIn} />}>
+                    <Button text>Upload</Button>
+                    <Button primary>
                         Login
                     </Button>
+                    <Menu items = {MENU_ITEMs}>
+                        <button className={cx('more-btn')}>
+                            <FontAwesomeIcon icon={faEllipsisVertical} />
+                        </button>
+                    </Menu>
                 </div>
             </div>
         </header>
