@@ -97,6 +97,18 @@
         background-color: rgba(22, 24, 35, 0.06);
     }
 }
+//Actions
+.actions{
+    display: flex;
+    align-items: center;
+}
+.action-btn {
+    background-color: transparent;
+    font-size: 2.2rem;
+    color:grey ;
+    padding: 4px 12px;
+    cursor: pointer;
+}
 .more-btn {
     font-size: 2rem;
     margin-left: 28px;
@@ -104,5 +116,11 @@
     padding:4px 8px;
     cursor: pointer;
 }
-//Menu 
-    
+
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    object-fit: cover;
+    border-radius: 50%;
+    cursor: pointer;
+}
