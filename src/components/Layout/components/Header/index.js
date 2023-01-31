@@ -25,11 +25,13 @@ import { Action } from '@remix-run/router';
 
 import styles from '../../components/Header/Header.module.scss';
 import images from '../../../../asset/images';
+import Image from '../../../Image';
 import AccountItem from '../../../AccountItem';
 import { Wrapper as PopperWrapper } from '../../../Popper';
 import Button from '../../../Button';
 import Menu from '../../../Popper/Menu';
 import { faKeyboard } from '@fortawesome/free-regular-svg-icons';
+import { UploadIcon } from '../../../Icons';
 
 // bind styles trả về một function cho cx
 const cx = classNames.bind(styles);
@@ -192,7 +194,7 @@ function Header() {
                         <>
                             <Tippy delay={[0, 200]} content="Upload video" placement="bottom">
                                 <button className={cx('action-btn')}>
-                                    <FontAwesomeIcon icon={faCloudUpload} />
+                                    <UploadIcon/>
                                 </button>
                             </Tippy>
                             <button className={cx('action-btn')}>
@@ -207,7 +209,7 @@ function Header() {
                     )}
                     <Menu items={currentUser ? userMenu : MENU_ITEMs}>
                         {currentUser ? (
-                            <img
+                            <Image
                                 className={cx('user-avatar')}
                                 src="https://p16-sign-va.tiktokcdn.com/tos-maliva-avt-0068/89fd0c44132bbba327884036922fd33d~c5_100x100.jpeg?x-expires=1675324800&x-signature=4cWcv34lUsaP7M8xMk48j4sDib8%3D"
                                 alt="Nguyen Van A"
