@@ -5,7 +5,7 @@ import 'tippy.js/dist/tippy.css';
 import HeadlessTippy from '@tippyjs/react/headless';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark, faSpinner, faMagnifyingGlass, faL } from '@fortawesome/free-solid-svg-icons';
-import { useReducer,useRef } from 'react';
+import { useReducer, useRef } from 'react';
 
 import styles from './Search.module.scss';
 import AccountItem from '../../../AccountItem';
@@ -45,7 +45,6 @@ const clearSearch = () => {
 const reducer = (state, action) => {
     switch (action.type) {
         case SET_SEARCH:
-
             return {
                 ...state,
                 currentSearch: action.payload,
@@ -64,26 +63,43 @@ const reducer = (state, action) => {
         default:
             throw new Error('Invalid action');
     }
-
 };
 function Search() {
     const [state, dispatch] = useReducer(reducer, initState);
+    const [searchResult, setSearchResult] = useState([]);
+    const [showResult, setShowResult] = useState(true);
+    const [loading, setLoading] = useState(false)
     const { currentSearch, searchedList } = state;
-    const [showResult,setShowResult] = useState(true)
-    const inputRef= useRef();
-    useEffect(() => {});
+    const inputRef = useRef();
+    useEffect(() => {
+        if(!currentSearch.trim()){
+            setSearchResult([])
+            return
+        }
+        setLoading(true)
+        fetch(`https://tiktok.fullstack.edu.vn/api/users/search?q=${encodeURIComponent(currentSearch)}&type=less`)
+            .then((res) => res.json())
+            .then((res) => {
+                setSearchResult(res.data);
+                setLoading(false)
+            .cath(()=>{
+                setLoading(false)
+            })
+            });
+    }, [currentSearch]);
 
     const handleClear = () => {
-        inputRef.current.focus();
         dispatch(clearSearch());
+        setSearchResult([]);
+        inputRef.current.focus();
     };
-    const handleHideResult = () =>{
-        setShowResult(false)
-    }
+    const handleHideResult = () => {
+        setShowResult(false);
+    };
     return (
         <HeadlessTippy
             interactive
-            visible={currentSearch.length > 0 &&  showResult }
+            visible={showResult && searchResult.length > 0 }
             render={(attrs) => (
                 <div className={cx('search-result')} tabIndex="-1" {...attrs}>
                     <PopperWrapper>
@@ -98,33 +114,34 @@ function Search() {
                             })}
                         </div>
                         <h4 className={cx('search-title')}>Accounts</h4>
-                        <AccountItem />
-                        <AccountItem />
-                        <AccountItem />
+                        {searchResult.map((result) => (
+                            <AccountItem key={result.id} data={result} />
+                        ))}
                     </PopperWrapper>
                 </div>
             )}
-            onClickOutside= {handleHideResult}
+            onClickOutside={handleHideResult}
         >
             <div className={cx('search')}>
                 <input
-                    ref = {inputRef}
+                    ref={inputRef}
                     value={currentSearch}
                     onChange={(e) => {
                         dispatch(setSearch(e.target.value));
                     }}
-                    onFocus={()=>setShowResult(true)}
+                    onFocus={() => setShowResult(true)}
                     placeholder="Search accounts and videos"
                     spellCheck={false}
                 />
-                {!!currentSearch &&(
+                {(!!currentSearch &&!loading && (
                     <button className={cx('clear')} onClick={handleClear}>
                         <FontAwesomeIcon icon={faCircleXmark} />
                     </button>
-                )||<FontAwesomeIcon className={cx('loading')} icon={faSpinner} />}
-
+                ))}
+                {loading && 
+                <FontAwesomeIcon className={cx('loading')} icon={faSpinner} />
+                }
                 
-
                 <button
                     onClick={() => {
                         dispatch(addSearch(currentSearch));

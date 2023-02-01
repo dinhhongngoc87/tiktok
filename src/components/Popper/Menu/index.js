@@ -10,8 +10,6 @@ const cx = classNames.bind(styles);
 function Menu({ children, items = [] }) {
     const [history,setHistory] = useState([{data:items}])// đồng bộ cấu trúc của phần tử cha và con
     const current = history[history.length-1]
-    console.log("Current: ",current)
-    console.log("Items: ",items)
     const renderItems = () => {
         return current.data.map((item, index) => {
             const isParent = !!item.children //convert boolean (dùng để ktra xem có prop children hay k)
