@@ -13,6 +13,7 @@ import {
     faSignOut,
 } from '@fortawesome/free-solid-svg-icons';
 import { Action } from '@remix-run/router';
+import { Link } from 'react-router-dom';
 
 import styles from '../../components/Header/Header.module.scss';
 import images from '../../../../asset/images';
@@ -22,6 +23,7 @@ import Menu from '../../../Popper/Menu';
 import { faKeyboard } from '@fortawesome/free-regular-svg-icons';
 import { UploadIcon, PaperPlaneIcon, Message} from '../../../Icons';
 import Search from '../Search';
+import routesConfig from '../../../../config/route';
 
 // bind styles trả về một function cho cx
 const cx = classNames.bind(styles);
@@ -83,10 +85,13 @@ function Header() {
             separate: true,
         },
     ];
+    const handleMenuChange = () =>{
+        
+    }
     return (
         <header className={cx('wrapper')}>
             <div className={cx('inner')}>
-                <img src={images.logo} alt="Tiktok" />
+                <Link to={routesConfig.home} className={cx('logo-link')}><img src={images.logo} alt="Tiktok" /></Link>
                 <Search/>
                 <div className={cx('actions')}>
                     {currentUser ? (
@@ -114,7 +119,7 @@ function Header() {
                             <Button primary>Login</Button>
                         </>
                     )}
-                    <Menu items={currentUser ? userMenu : MENU_ITEMs}>
+                    <Menu items={currentUser ? userMenu : MENU_ITEMs} onChange = {handleMenuChange}>
                         {currentUser ? (
                             <Image
                                 className={cx('user-avatar')}
