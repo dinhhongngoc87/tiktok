@@ -7,10 +7,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark, faSpinner, faMagnifyingGlass, faL } from '@fortawesome/free-solid-svg-icons';
 import { useReducer, useRef } from 'react';
 
+import * as searchServices from '../../../../apiServices/searchServices'
 import styles from './Search.module.scss';
 import AccountItem from '../../../AccountItem';
 import { Wrapper as PopperWrapper } from '../../../Popper';
 import { SearchIcon } from '../../../Icons';
+import { useDebounce } from '../../../../hooks';
 
 const cx = classNames.bind(styles);
 //init
@@ -68,25 +70,25 @@ function Search() {
     const [state, dispatch] = useReducer(reducer, initState);
     const [searchResult, setSearchResult] = useState([]);
     const [showResult, setShowResult] = useState(true);
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(false);
     const { currentSearch, searchedList } = state;
+    const debounced = useDebounce(currentSearch, 500); //when user stop typing , debounced will be updated after 500ms
     const inputRef = useRef();
     useEffect(() => {
-        if(!currentSearch.trim()){
-            setSearchResult([])
-            return
+        if (!debounced.trim()) {
+            setSearchResult([]);
+            return;
         }
-        setLoading(true)
-        fetch(`https://tiktok.fullstack.edu.vn/api/users/search?q=${encodeURIComponent(currentSearch)}&type=less`)
-            .then((res) => res.json())
-            .then((res) => {
-                setSearchResult(res.data);
-                setLoading(false)
-            .cath(()=>{
-                setLoading(false)
-            })
-            });
-    }, [currentSearch]);
+        const fetchApi = async () =>{
+            setLoading(true);
+            const result = await searchServices.search(debounced)
+            console.log(result)
+            setSearchResult(result)
+            setLoading(false);
+        }
+        fetchApi()
+        
+    }, [debounced]);
 
     const handleClear = () => {
         dispatch(clearSearch());
@@ -99,7 +101,7 @@ function Search() {
     return (
         <HeadlessTippy
             interactive
-            visible={showResult && searchResult.length > 0 }
+            visible={showResult && searchResult.length > 0}
             render={(attrs) => (
                 <div className={cx('search-result')} tabIndex="-1" {...attrs}>
                     <PopperWrapper>
@@ -133,15 +135,13 @@ function Search() {
                     placeholder="Search accounts and videos"
                     spellCheck={false}
                 />
-                {(!!currentSearch &&!loading && (
+                {!!currentSearch && !loading && (
                     <button className={cx('clear')} onClick={handleClear}>
                         <FontAwesomeIcon icon={faCircleXmark} />
                     </button>
-                ))}
-                {loading && 
-                <FontAwesomeIcon className={cx('loading')} icon={faSpinner} />
-                }
-                
+                )}
+                {loading && <FontAwesomeIcon className={cx('loading')} icon={faSpinner} />}
+
                 <button
                     onClick={() => {
                         dispatch(addSearch(currentSearch));
