@@ -1,9 +1,9 @@
-
-const routes  = {
-    home:'/',
+const routes = {
+    home: '/',
     following: '/following',
     profile: '/profile',
     upload: '/upload',
     search: '/search',
-}
-export default routes
+    live: '/live',
+};
+export default routes;
