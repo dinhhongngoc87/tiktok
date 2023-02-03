@@ -1,5 +1,4 @@
 import classNames from 'classnames/bind';
-import { useEffect, useState } from 'react';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -12,18 +11,17 @@ import {
     faUser,
     faSignOut,
 } from '@fortawesome/free-solid-svg-icons';
-import { Action } from '@remix-run/router';
 import { Link } from 'react-router-dom';
 
 import styles from '../../components/Header/Header.module.scss';
-import images from '../../../../asset/images';
-import Image from '../../../Image';
-import Button from '../../../Button';
-import Menu from '../../../Popper/Menu';
+import images from '../../../asset/images';
+import Image from '../../../components/Image';
+import Button from '../../../components/Button';
+import Menu from '../../../components/Popper/Menu';
 import { faKeyboard } from '@fortawesome/free-regular-svg-icons';
-import { UploadIcon, PaperPlaneIcon, Message} from '../../../Icons';
+import { UploadIcon, PaperPlaneIcon, Message} from '../../../components/Icons';
 import Search from '../Search';
-import routesConfig from '../../../../config/route';
+import config from '../../../config';
 
 // bind styles trả về một function cho cx
 const cx = classNames.bind(styles);
@@ -43,6 +41,70 @@ const MENU_ITEMs = [
                     code: 'vi',
                     title: 'Tiếng việt',
                 },
+                {
+                    code: 'vi',
+                    title: 'Tiếng việt',
+                },
+                {
+                    code: 'vi',
+                    title: 'Tiếng việt',
+                },
+                {
+                    code: 'vi',
+                    title: 'Tiếng việt',
+                },
+                {
+                    code: 'vi',
+                    title: 'Tiếng việt',
+                },
+                {
+                    code: 'vi',
+                    title: 'Tiếng việt',
+                },
+                {
+                    code: 'vi',
+                    title: 'Tiếng việt',
+                },
+                {
+                    code: 'vi',
+                    title: 'Tiếng việt',
+                },
+                {
+                    code: 'vi',
+                    title: 'Tiếng việt',
+                },
+                {
+                    code: 'vi',
+                    title: 'Tiếng việt',
+                },
+                {
+                    code: 'vi',
+                    title: 'Tiếng việt',
+                },
+                {
+                    code: 'vi',
+                    title: 'Tiếng việt',
+                },
+                {
+                    code: 'vi',
+                    title: 'Tiếng việt',
+                },
+                {
+                    code: 'vi',
+                    title: 'Tiếng việt',
+                }, {
+                    code: 'vi',
+                    title: 'Tiếng việt',
+                },
+                {
+                    code: 'vi',
+                    title: 'Tiếng việt',
+                },
+                {
+                    code: 'vi',
+                    title: 'Tiếng việt',
+                },
+                
             ],
         },
     },
@@ -91,7 +153,7 @@ function Header() {
     return (
         <header className={cx('wrapper')}>
             <div className={cx('inner')}>
-                <Link to={routesConfig.home} className={cx('logo-link')}><img src={images.logo} alt="Tiktok" /></Link>
+                <Link to={config.routes.home} className={cx('logo-link')}><img src={images.logo} alt="Tiktok" /></Link>
                 <Search/>
                 <div className={cx('actions')}>
                     {currentUser ? (

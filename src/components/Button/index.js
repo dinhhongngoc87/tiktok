@@ -1,5 +1,5 @@
-import { faL } from '@fortawesome/free-solid-svg-icons';
 import className from 'classnames/bind';
+import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom';
 import styles from './Button.module.scss';
 const cx = className.bind(styles);
@@ -57,6 +57,9 @@ function Button({
 
         </Comp>
     );
+}
+Button.propTypes = {
+    children:PropTypes.node
 }
 
 export default Button;
