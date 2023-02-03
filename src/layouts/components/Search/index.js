@@ -70,22 +70,22 @@ function Search() {
     const [showResult, setShowResult] = useState(true);
     const [loading, setLoading] = useState(false);
     const { currentSearch, searchedList } = state;
-    const debounced = useDebounce(currentSearch, 500); //when user stop typing , debounced will be updated after 500ms
+    const debouncedValue = useDebounce(currentSearch, 500); //when user stop typing , debouncedValue will be updated after 500ms
     const inputRef = useRef();
     useEffect(() => {
-        if (!debounced.trim()) {
+        if (!debouncedValue.trim()) {
             setSearchResult([]);
             return;
         }
         const fetchApi = async () => {
             setLoading(true);
-            const result = await searchServices.search(debounced);
+            const result = await searchServices.search(debouncedValue);
             console.log(result);
             setSearchResult(result);
             setLoading(false);
         };
         fetchApi();
-    }, [debounced]);
+    }, [debouncedValue]);
 
     const handleClear = () => {
         dispatch(clearSearch());
